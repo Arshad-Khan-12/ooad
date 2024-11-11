@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ride History</title>
+    <link rel="stylesheet" href="history.css" />
+  </head>
+  <body>
+    <div id="historyContainer">
+      <h1>Ride History</h1>
+      <div id="historyList"></div>
+      <button onclick="clearHistory()">Clear History</button>
+    </div>
+
+    <script>
+      window.onload = function () {
+        const rideHistory = JSON.parse(localStorage.getItem("rideHistory"));
+        const historyList = document.getElementById("historyList");
+
+        if (rideHistory) {
+          const rideDetails = document.createElement("div");
+          rideDetails.classList.add("historyItem");
+
+          const pickup = document.createElement("p");
+          pickup.textContent = `Pickup Location: ${rideHistory.pickup}`;
+          rideDetails.appendChild(pickup);
+
+          const destination = document.createElement("p");
+          destination.textContent = `Destination: ${rideHistory.destination}`;
+          rideDetails.appendChild(destination);
+
+          const options = document.createElement("div");
+          options.classList.add("rideOptionsHistory");
+          rideHistory.options.forEach((option) => {
+            const optionDiv = document.createElement("p");
+            optionDiv.textContent = `${option.type} - ${option.price}`;
+            options.appendChild(optionDiv);
+          });
+          rideDetails.appendChild(options);
+
+          historyList.appendChild(rideDetails);
+        } else {
+          historyList.innerHTML = "<p>No ride history found.</p>";
+        }
+      };
+
+      function clearHistory() {
+        localStorage.removeItem("rideHistory");
+        document.getElementById("historyList").innerHTML =
+          "<p>No ride history found.</p>";
+      }
+    </script>
+  </body>
+</html>
